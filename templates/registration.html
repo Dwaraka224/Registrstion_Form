@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+{% extends 'dummy.html' %}
+{% block title %}
+<title>Register</title>
+{% endblock %}
+{% block body_block %}
     <center>
         <h1>Registration Form</h1>
         <form method="POST" enctype="multipart/form-data">
@@ -18,6 +15,7 @@
 
          </form>
     </center>
+{% endblock %}
     
-</body>
+
 </html>

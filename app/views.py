@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.core.mail import send_mail
 from django.urls import reverse
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 from app.forms import *
 def registration(request):
@@ -51,5 +52,42 @@ def user_login(request):
         else:
             return HttpResponse('Invalid Credentials')
     return render(request,'user_login.html')
- 
- 
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('home'))
+@login_required
+def profile_display(request):
+    un=request.session.get('username')
+    uo=User.objects.get(username=un)
+    po=Profile.objects.get(username=uo)
+    d={'uo':uo,'po':po}
+    return render(request,'profile_display.html',d)
+
+@login_required
+def change_passwd(request):
+    if request.method=='POST':
+        username=request.session.get('username')
+        uo=User.objects.get(username=username)
+        npw=request.POST['pw']
+        uo.set_password(npw)
+        uo.save()
+        return HttpResponse('changed password')
+
+
+    return render(request,'change_passwd.html')
+def forgot_passwd(request):
+    if request.method=='POST':
+        username=request.POST['un']
+        password=request.POST['pw']
+        LUO=User.objects.filter(username=username)
+        if LUO:
+            uo=LUO[0]
+            uo.set_password(password)
+            uo.save()
+            return HttpResponse('forgot password succssfully')
+        else:
+            return HttpResponse('invalid Cradentials')
+
+    return render(request,'forgot_passwd.html')

@@ -1,0 +1,16 @@
+{% extends 'dummy.html'  %}
+{% block title %}
+<title>change_passwd page</title>
+{% endblock %}
+
+{% block body_block %}
+<center>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="pw">password</label>
+        <input type="password" name="pw" id="pw" required>
+        <input type="submit" value="changepasswd">
+    </form>
+</center>
+
+{% endblock %}
